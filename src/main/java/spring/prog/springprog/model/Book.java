@@ -21,6 +21,16 @@ public class Book {
         this.author = author;
     }
 
+    /*public Book(String name, String authorName) {
+        this.name = name;
+        author.setName(authorName);
+    }*/
+
+    public static Book addNewBook(String name, String authorName) {
+        Author author1 = new Author(authorName);
+        return new Book(name, author1);
+    }
+
     public Long getId() {
         return id;
     }

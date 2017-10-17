@@ -1,0 +1,10 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::site-head"/>
+<body>
+<header th:replace="layout::site-header"/>
+<h1>Добро пожаловать!</h1>
+Сейчас: <b th:text="${execInfo.now.time}">дата и время</b>
+<footer th:replace="layout::site-footer"/>
+</body>
+</html>

@@ -23,6 +23,15 @@ public class Author {
         this.books = books;
     }
 
+    public Author(String name){
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public Long getId() {
         return id;
     }
@@ -43,7 +52,9 @@ public class Author {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setBook(Book book) {
+        books.add(book);
     }
+
+
 }

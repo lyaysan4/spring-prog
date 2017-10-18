@@ -14,5 +14,7 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
     List<Book> findByNameLikeIgnoreCase(String name);
 
+    List<Book> findByNameLikeIgnoreCaseAndAuthor(String name, Author author);
+
     Book save(Book entity);
 }

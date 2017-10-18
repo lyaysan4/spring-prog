@@ -52,7 +52,7 @@ public class Author {
         return books;
     }
 
-    public void setBook(Book book) {
+    public void addBook(Book book) {
         books.add(book);
     }
 

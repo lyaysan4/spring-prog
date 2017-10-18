@@ -9,8 +9,6 @@ import spring.prog.springprog.model.Book;
 import spring.prog.springprog.repository.AuthorRepository;
 import spring.prog.springprog.repository.BookRepository;
 
-import java.util.concurrent.ArrayBlockingQueue;
-
 @Controller
 public class BookController {
 
@@ -32,38 +30,29 @@ public class BookController {
     }
 
     @PostMapping("/books/edit")
-    public String addBook(@RequestParam(value = "name") String name, @RequestParam(value = "author", required = false, defaultValue = "Неизвестно") String author, Model model) {
-
-        Author author1 = authorRepository.findByNameLikeIgnoreCase("%" + author + "%");
-        if (author1!=null) {
-            if (!bookRepository.findByNameLikeIgnoreCase("%" + name + "%").isEmpty()) {
+    public String addBook(@RequestParam(value = "name") String name,
+                          @RequestParam(value = "author", required = false, defaultValue = "Неизвестно") String authorName,
+                          Model model) {
+        Author author = authorRepository.findByNameLikeIgnoreCase("%" + authorName + "%");
+        if (author != null) {
+            if (!bookRepository.findByNameLikeIgnoreCaseAndAuthor("%" + name + "%", author).isEmpty()) {
                 String notif = "Эта книга уже есть.";
                 model.addAttribute("notif", notif);
                 return "edit";
-            } else {
-                Book addedBook = new Book(name, author1);
-                author1.setBook(addedBook);
-                bookRepository.save(addedBook);
-                String notif = "Книга \"" + addedBook.getName() + "\", написанная " + addedBook.getAuthor() + " успешно добавлена!";
-                model.addAttribute("books", addedBook);
-                model.addAttribute("notif", notif);
-                return "edit";
             }
-        } else {
-            Author author2 = new Author(author);
-            Book addedBook = new Book(name, author2);
-            authorRepository.save(author2);
-            bookRepository.save(addedBook);
-            String notif = "Книга \"" + addedBook.getName() + "\", написанная " + addedBook.getAuthor() + " успешно добавлена!";
-            model.addAttribute("books", addedBook);
-            model.addAttribute("notif", notif);
-            return "edit";
-        }
+        } else
+            author = authorRepository.save(new Author(authorName));
 
+        Book addedBook = new Book(name, author);
+        bookRepository.save(addedBook);
+        String notif = "Книга \"" + addedBook.getName() + "\", написанная " + addedBook.getAuthor() + " успешно добавлена!";
+        model.addAttribute("books", addedBook);
+        model.addAttribute("notif", notif);
+        return "edit";
     }
 
     @PostMapping("/books/delete")
-    public String deleteBook (@RequestParam(value = "id") Long id){
+    public String deleteBook(@RequestParam(value = "id") Long id) {
         bookRepository.delete(id);
         return "redirect:/books";
     }

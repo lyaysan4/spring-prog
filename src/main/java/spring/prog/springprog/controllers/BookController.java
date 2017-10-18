@@ -62,6 +62,12 @@ public class BookController {
 
     }
 
+    @PostMapping("/books/delete")
+    public String deleteBook (@RequestParam(value = "id") Long id){
+        bookRepository.delete(id);
+        return "redirect:/books";
+    }
+
     @RequestMapping("/")
     public String index() {
         return "index";
